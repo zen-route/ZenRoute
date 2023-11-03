@@ -10,6 +10,7 @@ import List from '../screens/List/List';
 const TabNavigator = createBottomTabNavigator<HomeRoutes>();
 
 const MainNavigator = () => {
+  console.log('WE CAME IN HERE BRUH');
   return (
     <SafeAreaView style={styles.safeAreaView}>
       <TabNavigator.Navigator

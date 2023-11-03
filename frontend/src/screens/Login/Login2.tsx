@@ -8,6 +8,7 @@ import {
   AuthenticationRoutes,
   StackNavigationProps,
 } from '../../navigation/AuthenticationRoutes';
+import useAuthStore from '../../store/AuthStore';
 
 const Login2 = ({
   navigation,
@@ -15,12 +16,19 @@ const Login2 = ({
   const [email, setEmail] = React.useState<string | null>(null);
   const [password, setPassword] = React.useState<string | null>(null);
 
+  const signIn = useAuthStore(state => state.signIn);
+
   const navigateToSignUp = () => {
     navigation.navigate('Signup');
   };
 
   console.log('EMAIL: ', email);
   console.log('PASSWORD: ', password);
+
+  const handleSignIn = async () => {
+    signIn();
+  };
+
   return (
     <View style={styles.login2Wrapper}>
       <Login2SVG />
@@ -48,7 +56,7 @@ const Login2 = ({
 
           <View style={styles.buttonWrapper}>
             <View style={styles.buttonInnerWrapper}>
-              <FancyButton onPress={() => {}} text="Sign In" />
+              <FancyButton onPress={handleSignIn} text="Sign In" />
             </View>
           </View>
 

@@ -43,12 +43,15 @@ function App(): JSX.Element {
       </AuthenticationStack.Navigator>
     );
   };
+
+  const INIT_ROUTE = isLoggedIn ? 'Main' : 'Authentication';
+  console.log('INIT ROUTE: ', INIT_ROUTE);
   return (
     <NavigationContainer>
       <SafeAreaProvider>
         <AppStack.Navigator
           screenOptions={{headerShown: false}}
-          initialRouteName={isLoggedIn ? 'Main' : 'Authentication'}>
+          initialRouteName={INIT_ROUTE}>
           <AppStack.Screen
             name="Authentication"
             component={AuthenticationNavigator}
