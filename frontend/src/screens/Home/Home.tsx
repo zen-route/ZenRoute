@@ -2,10 +2,16 @@ import React, {useEffect} from 'react';
 import {View, Text, StyleSheet, PermissionsAndroid} from 'react-native';
 import Geolocation from '@react-native-community/geolocation';
 import {ILocationProp} from '../../types/constantT/location.type';
+import useAuthStore from '../../store/AuthStore';
+import SimpleButton from '../../components/Button';
+import {StackNavigationProps} from '../../navigation/AppRoutes';
+import {HomeRoutes} from '../../navigation/HomeRoutes';
 
-const Home = () => {
+const Home = ({navigation}: StackNavigationProps<HomeRoutes, 'Home'>) => {
   const [currentLocation, setCurrentLocation] =
     React.useState<ILocationProp | null>(null);
+  const setUserLocation = useAuthStore(state => state.setUserLocation);
+
   useEffect(() => {
     const requestForLocationIfNotGranted = async () => {
       try {
@@ -29,6 +35,10 @@ const Home = () => {
                 altitude: position.coords.altitude,
                 accuracy: position.coords.accuracy,
               });
+              setUserLocation({
+                latitude: position.coords.latitude,
+                longitude: position.coords.longitude,
+              });
             },
             error => {
               console.log('ERROR: ', error);
@@ -43,7 +53,7 @@ const Home = () => {
       }
     };
     requestForLocationIfNotGranted();
-  }, []);
+  }, [setUserLocation]);
 
   return (
     <View>
@@ -51,6 +61,24 @@ const Home = () => {
       <Text style={styles.textStyle}>
         {currentLocation ? JSON.stringify(currentLocation) : 'No location'}
       </Text>
+      <View
+        style={{
+          width: '100%',
+          height: '100%',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
+        <View style={{width: '50%'}}>
+          <SimpleButton
+            onPress={() => {
+              navigation.navigate('PlanRide');
+            }}
+            text="Plan Ride"
+            theme="DARK"
+          />
+        </View>
+      </View>
     </View>
   );
 };
