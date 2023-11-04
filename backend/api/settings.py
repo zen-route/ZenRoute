@@ -85,11 +85,14 @@ DATABASES = {
     'default': dj_database_url.parse(os.environ.get("DATABASE_URL"), conn_max_age=600)
 }
 
-AUTH_USER_MODEL = 'user.ZenUser'
+# settings.py
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+    ),
+}
 
-AUTHENTICATION_BACKENDS = [
-    'django.contrib.auth.backends.ModelBackend',
-]
+AUTH_USER_MODEL = 'user.CustomUser'
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
