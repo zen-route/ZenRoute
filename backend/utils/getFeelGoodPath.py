@@ -1,16 +1,25 @@
 import heapq
 import requests
+import json
 from rest_framework import status
 from locations.models import Place
 from rest_framework.response import Response
+from decimal import Decimal
+import itertools
 
 
 class Node:
+    _ids = itertools.count()
     def __init__(self, name, lat, lon):
+        self.id = next(self._ids)
         self.name = name
         self.lat = lat
         self.lon = lon
         self.edges = []
+        
+    def __lt__(self, other):
+        # Compare nodes based on their IDs
+        return self.id < other.id
 
 
 class Edge:
@@ -18,6 +27,12 @@ class Edge:
         self.to = to
         self.timeReq = timeReq
         self.feel_good = feel_good
+        
+class DecimalEncoder(json.JSONEncoder):
+    def default(self, o):
+        if isinstance(o, Decimal):
+            return float(o)
+        return super().default(o)
 
 
 def get_lat_lon(place_name):
@@ -65,8 +80,7 @@ def algoGetFeelGoodPath(source, destination, available_time):
                     total_feel_good = feel_good_count + edge.feel_good
                     total_time = time_spent + edge.timeReq
                     if total_time <= available_time:
-                        heapq.heappush(
-                            queue, (total_feel_good, total_time, edge.to, path))
+                        heapq.heappush(queue, (total_feel_good, total_time, edge.to, path))
 
     # return the paths in the list
     return top_paths
@@ -90,26 +104,31 @@ def getFeelGoodPaths(source_lat, source_lon, destination, categories, time):
         feel_good_places = []
         for category in categories:
             places = Place.objects.filter(category=category)[:10]
-            feel_good_places.extend(places)
+            feel_good_places.extend(places.values())
     elif len(categories)==3:
         feel_good_places = []
         for category in categories:
             places = Place.objects.filter(category=category)[:7]
-            feel_good_places.extend(places)
+            feel_good_places.extend(places.values())
     elif len(categories)==4:
         feel_good_places = []
         for category in categories:
             places = Place.objects.filter(category=category)[:5]
-            feel_good_places.extend(places)
+            feel_good_places.extend(places.values())
     elif len(categories)==5:
         feel_good_places = []
         for category in categories:
             places = Place.objects.filter(category=category)[:4]
-            feel_good_places.extend(places)
+            feel_good_places.extend(places.values())
     else:
-        feel_good_places = Place.objects.filter(category=categories[0])[:20]
+        feel_good_places = []
+        places = Place.objects.filter(category=categories[0])[:20]
+        feel_good_places.extend(places.values())
         
-
+        
+    # #save feel_good_places in a json file
+    # with open('feel_good_places.json', 'w') as f:
+    #     json.dump(feel_good_places, f, cls=DecimalEncoder)
     nodes = list()
 
     # append src and destiantion to nodes, src in start and destn at end
@@ -122,11 +141,12 @@ def getFeelGoodPaths(source_lat, source_lon, destination, categories, time):
         count += 1
         if count == 20:
             break
-        nodes.append(Node(node.name, node.latitude, node.longitude))
+        nodes.append(Node(node['name'], node['latitude'], node['longitude']))
 
     API_URL = 'http://router.project-osrm.org/table/v1/driving/'
     for node in nodes:
         API_URL += str(node.lon) + ',' + str(node.lat) + ';'
+        
     API_URL = API_URL[:-1]
     API_URL += '?annotations=duration'
     response = requests.get(API_URL)

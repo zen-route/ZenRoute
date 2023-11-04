@@ -2,6 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from utils.getFeelGoodPath import getFeelGoodPaths
+from .serializers import RouteSerializer
 
 """
 example json needed after GPT simplifies the string
@@ -11,47 +12,28 @@ example json needed after GPT simplifies the string
     "destination":"Cubbon Park",  string field
     "time": 15000,   minutes, integer field
     "categories": "Lakes,Parks"     can be of 5 types - Lakes, Parks, Dineouts, Temples, Viewpoints all comma separated, string field
-    "extra_requirements": "I want to take my dog as well so add places only in which dogs are allowed"   string field
-}
-"""
-
-# TODO- complete function that simplifies the string using GPT into above json format
-
-
-def simplifyString(string):
-    response = {
-        "source_lon": 77.681345,
-        "source_lat":  13.112519,
-        "destination": "Cubbon Park",
-        "time": 2500,
-        "categories": "Lakes, Temples"
     }
-    return response  # should return the above example json format
-
-# TODO- feed in all the paths in gpt4 that getFeelGoodPath returns and return the best 3
-
-
-def analyzeRoutes(paths, conditions=None):
-    pass
+"""
 
 
 class RouteView(APIView):
     def post(self, request):
+        #verify the data from the serializer
+        serializer = RouteSerializer(data=request.data)
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+        source_lat = serializer.validated_data['source_lat']
+        source_lon = serializer.validated_data['source_lon']
+        destination = serializer.validated_data['destination']
+        time = serializer.validated_data['time']
+        categories_data = serializer.validated_data['categories']
 
-        text = request.data['text']
-
-        data = simplifyString(text)
-        source_lat = data['source_lat']
-        source_lon = data['source_lon']
-        destination = data['destination']
-        time = data['time']
         # convert comma separated string to list and chop of the spaces
-        categories = [category.strip() for category in data['categories'].split(',')]
+        categories = [category.strip() for category in categories_data.split(',')]
 
-        # get all the paths in list format
         paths = getFeelGoodPaths(source_lat, source_lon, destination, categories, time) #list of paths
-        # resultant_routes = analyzeRoutes(paths, data['extra_requirements'])
-        resultant_routes = []
+        resultant_routes = paths
 
         return Response(resultant_routes, status=status.HTTP_200_OK)
 
