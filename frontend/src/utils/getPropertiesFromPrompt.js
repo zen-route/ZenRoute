@@ -2,6 +2,14 @@ import getLLMResponse from './getLLMResponse';
 
 const CATEGORIES = ['Lakes', 'Parks', 'Dineouts', 'Temples', 'Viewpoints'];
 
+const getJSONFromLLMResponse = response => {
+  const json = response
+    .replace(/'/g, '"')
+    .replace(/True/g, 'true')
+    .replace(/False/g, 'false');
+
+  return JSON.parse(json);
+};
 const getPropertyFromPrompt = async prompt => {
   const categories = await getLLMResponse({
     question: `I have a set of categories which are ${CATEGORIES.join(
@@ -10,7 +18,7 @@ const getPropertyFromPrompt = async prompt => {
     statement: prompt,
   });
 
-  console.log('categories', categories);
+  console.log('categories', getJSONFromLLMResponse(categories).answer);
 
   const timeConstraint = await getLLMResponse({
     question:
@@ -18,19 +26,22 @@ const getPropertyFromPrompt = async prompt => {
     statement: prompt,
   });
 
-  console.log('timeConstraint', timeConstraint);
+  console.log('timeConstraint', getJSONFromLLMResponse(timeConstraint).answer);
 
   const additionalConstraints = await getLLMResponse({
     question: `Apart from the categories (which are ${categories}) and time constraint (which is ${timeConstraint} minutes), what are the additional constraints mentioned in the statement?`,
     statement: prompt,
   });
 
-  console.log('additionalConstraints', additionalConstraints);
+  console.log(
+    'additionalConstraints',
+    getJSONFromLLMResponse(additionalConstraints).answer,
+  );
 
   return {
-    categories,
-    timeConstraint,
-    additionalConstraints,
+    categories: getJSONFromLLMResponse(categories).answer,
+    timeContraint: getJSONFromLLMResponse(timeConstraint).answer,
+    additionalConstraints: getJSONFromLLMResponse(additionalConstraints).answer,
   };
 };
 

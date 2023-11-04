@@ -3,7 +3,7 @@ import {Pressable, Text, StyleSheet} from 'react-native';
 
 interface IFancyButtonProps {
   text: string;
-  onPress: () => void;
+  onPress: () => void | Promise<void>;
 }
 const FancyButton = ({onPress, text}: IFancyButtonProps) => {
   return (

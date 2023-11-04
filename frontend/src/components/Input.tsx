@@ -6,6 +6,7 @@ interface ICustomTextInputProp {
   onTextChange: any;
   type: KeyboardTypeOptions;
   secureTextEntry?: boolean;
+  numOfLines?: number;
 }
 
 const CustomTextInput = ({
@@ -13,6 +14,7 @@ const CustomTextInput = ({
   onTextChange,
   type,
   secureTextEntry,
+  numOfLines,
 }: ICustomTextInputProp) => {
   return (
     <TextInput
@@ -22,6 +24,7 @@ const CustomTextInput = ({
       keyboardType={type}
       style={styles.textInputStyle}
       secureTextEntry={secureTextEntry}
+      numberOfLines={numOfLines ?? 1}
     />
   );
 };
