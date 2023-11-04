@@ -2,7 +2,7 @@
 > Savor the journey, not just the destination.
 
  <p align="center">
-  <img width="481" alt="Screenshot 2023-11-04 at 12 36 31 PM (1)" src="https://github.com/zen-route/ZenRoute/assets/76112446/86769a80-5d91-4c8a-afa6-d3fdd2d1be24">
+  <img width="350" alt="Screenshot 2023-11-04 at 12 36 31 PM (1)" src="https://github.com/zen-route/ZenRoute/assets/76112446/86769a80-5d91-4c8a-afa6-d3fdd2d1be24">
 </p>
 
 Ever had a chat with your map? "Hey Maps, I've got time. Let's take the scenic route, show me some peaceful places!" Maps replies, "Sorry, I'm not programmed for that." But then, Zenroute chimes in, "Hey there! I've got you covered."
