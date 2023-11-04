@@ -25,8 +25,8 @@ const getLLMResponse = async ({question = '', statement = ''}) => {
       `;
 
   try {
-    const res1 = await model.call(template);
-    return res1;
+    const res = await model.call(template);
+    return res;
   } catch (error) {
     console.log({error});
     console.log(error.response);
