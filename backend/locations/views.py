@@ -10,7 +10,7 @@ example json needed after GPT simplifies the string
     "source_lat":  13.112519,   decimal field upto length 30 and 20 decimal places
     "destination":"Cubbon Park",  string field
     "time": 15000,   minutes, integer field
-    "categories": "Lakes, Temples"     can be of 5 types - Lakes, Parks, Dineouts, Temples, Viewpoints all comma separated, string field
+    "categories": "Lakes,Parks"     can be of 5 types - Lakes, Parks, Dineouts, Temples, Viewpoints all comma separated, string field
     "extra_requirements": "I want to take my dog as well so add places only in which dogs are allowed"   string field
 }
 """
@@ -45,13 +45,11 @@ class RouteView(APIView):
         source_lon = data['source_lon']
         destination = data['destination']
         time = data['time']
-        # convert comma separated string to list
-        categories = data['categories'].split(',')
+        # convert comma separated string to list and chop of the spaces
+        categories = [category.strip() for category in data['categories'].split(',')]
 
         # get all the paths in list format
         paths = getFeelGoodPaths(source_lat, source_lon, destination, categories, time) #list of paths
-        print(paths)
-
         # resultant_routes = analyzeRoutes(paths, data['extra_requirements'])
         resultant_routes = []
 

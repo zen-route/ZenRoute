@@ -84,8 +84,31 @@ def getFeelGoodPaths(source_lat, source_lon, destination, categories, time):
         return Response({'message': response.data['message']}, status=response.status_code)
 
     # step 2: get nodes array from database
-    # feel_good_places = Place.objects.filter(category__in=categories)
-    feel_good_places = Place.objects.filter(category="Lakes")
+    #pick only 10 places from each category
+    
+    if len(categories)==2:
+        feel_good_places = []
+        for category in categories:
+            places = Place.objects.filter(category=category)[:10]
+            feel_good_places.extend(places)
+    elif len(categories)==3:
+        feel_good_places = []
+        for category in categories:
+            places = Place.objects.filter(category=category)[:7]
+            feel_good_places.extend(places)
+    elif len(categories)==4:
+        feel_good_places = []
+        for category in categories:
+            places = Place.objects.filter(category=category)[:5]
+            feel_good_places.extend(places)
+    elif len(categories)==5:
+        feel_good_places = []
+        for category in categories:
+            places = Place.objects.filter(category=category)[:4]
+            feel_good_places.extend(places)
+    else:
+        feel_good_places = Place.objects.filter(category=categories[0])[:20]
+        
 
     nodes = list()
 
