@@ -1,5 +1,5 @@
 # ZenRoute
-> Savor the journey, not just the destination.
+> Embrace the journey, not just the destination.
 
  <p align="center">
   <img width="350" alt="Screenshot 2023-11-04 at 12 36 31 PM (1)" src="https://github.com/zen-route/ZenRoute/assets/76112446/86769a80-5d91-4c8a-afa6-d3fdd2d1be24">
@@ -27,3 +27,7 @@ ZenRoute is more than just a navigation tool; it's a movement dedicated to rekin
 Embark on your odyssey to tranquility with ZenRoute. Serene, Aesthetic, and Unhurried.
 
 Rediscover the joy of the journey with ZenRoute.
+
+<p align="center">
+  Made with ❤️ by team HACKpacker$.
+</p>
