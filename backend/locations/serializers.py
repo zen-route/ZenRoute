@@ -6,3 +6,6 @@ class RouteSerializer(serializers.Serializer):
     destination = serializers.CharField(max_length=100)
     categories = serializers.CharField(max_length=1000)
     time = serializers.IntegerField()
+    
+class GeocodeSerializer(serializers.Serializer):
+    name = serializers.CharField(max_length=500)

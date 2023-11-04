@@ -1,8 +1,8 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from utils.getFeelGoodPath import getFeelGoodPaths
-from .serializers import RouteSerializer
+from utils.getFeelGoodPath import getFeelGoodPaths, get_lat_lon
+from .serializers import RouteSerializer, GeocodeSerializer
 
 """
 example json needed after GPT simplifies the string
@@ -38,6 +38,18 @@ class RouteView(APIView):
         return Response(resultant_routes, status=status.HTTP_200_OK)
 
 
+class GeocodeView(APIView):
+    def post(self, request):
+        serializer = GeocodeSerializer(data=request.data)
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        name = request.data.get("name")
+        response = get_lat_lon(name)
+        if response.status_code == 200:
+            return Response(response.data, status=status.HTTP_200_OK)
+        else:
+            return Response({'message': response.data['message']}, status=response.status_code)
+        
 
 #paths example output:
 """
