@@ -2,8 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from utils.getFeelGoodPath import getFeelGoodPaths, get_lat_lon
-from .serializers import RouteSerializer, GeocodeSerializer, SaveTripSerializer, StopSerializer
-from rest_framework import permissions
+from .serializers import RouteSerializer, GeocodeSerializer
 
 """
 example json needed after GPT simplifies the string
@@ -50,30 +49,6 @@ class GeocodeView(APIView):
             return Response(response.data, status=status.HTTP_200_OK)
         else:
             return Response({'message': response.data['message']}, status=response.status_code)
-        
-class SaveTripView(APIView):
-    permission_classes = (permissions.IsAuthenticated,)
-    
-    def post(self, request):
-        user = request.user
-        trip_data = request.data
-        stop_data = trip_data.pop('stops', [])
-
-        trip_serializer = SaveTripSerializer(data=trip_data)
-        if trip_serializer.is_valid():
-            trip = trip_serializer.save(user=user)
-
-            stop_serializer = StopSerializer(data=stop_data, many=True)
-            if stop_serializer.is_valid():
-                stops = stop_serializer.save()
-                trip.stops.set(stops)
-
-                return Response(trip_serializer.data, status=status.HTTP_201_CREATED)
-            else:
-                trip.delete()
-                return Response(stop_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        else:
-            return Response(trip_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
 
 #paths example output:
