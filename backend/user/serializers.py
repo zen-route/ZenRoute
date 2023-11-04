@@ -10,14 +10,8 @@ class CustomUserSerializer(serializers.ModelSerializer):
         extra_kwargs = {'password': {'write_only': True}}
 
     def create(self, validated_data):
-        #leave trips blank if you want to create a user without trips
-        
-        if 'trips' not in validated_data:
-            validated_data['trips'] = ""
         user = CustomUser.objects.create_user(
             email=validated_data['email'],
             password=validated_data['password'],
-            full_name=validated_data['full_name'],
-            trips=validated_data['trips']
-        )
+            full_name=validated_data['full_name']        )
         return user
