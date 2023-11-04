@@ -2,10 +2,13 @@ import React, {useEffect} from 'react';
 import {View, Text, StyleSheet, PermissionsAndroid} from 'react-native';
 import Geolocation from '@react-native-community/geolocation';
 import {ILocationProp} from '../../types/constantT/location.type';
+import useAuthStore from '../../store/AuthStore';
 
 const Home = () => {
   const [currentLocation, setCurrentLocation] =
     React.useState<ILocationProp | null>(null);
+  const setUserLocation = useAuthStore(state => state.setUserLocation);
+
   useEffect(() => {
     const requestForLocationIfNotGranted = async () => {
       try {
@@ -29,6 +32,10 @@ const Home = () => {
                 altitude: position.coords.altitude,
                 accuracy: position.coords.accuracy,
               });
+              setUserLocation({
+                latitude: position.coords.latitude,
+                longitude: position.coords.longitude,
+              });
             },
             error => {
               console.log('ERROR: ', error);
@@ -43,7 +50,7 @@ const Home = () => {
       }
     };
     requestForLocationIfNotGranted();
-  }, []);
+  }, [setUserLocation]);
 
   return (
     <View>

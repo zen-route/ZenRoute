@@ -12,4 +12,5 @@ export interface BottomTabNavigationProps<
 export type HomeRoutes = {
   Home: undefined;
   List: undefined;
+  MapView: undefined;
 };

@@ -6,6 +6,7 @@ import {HomeRoutes} from './HomeRoutes';
 
 import Home from '../screens/Home/Home';
 import List from '../screens/List/List';
+import MapView from '../screens/MapView/MapView';
 
 const TabNavigator = createBottomTabNavigator<HomeRoutes>();
 
@@ -33,6 +34,11 @@ const MainNavigator = () => {
         <TabNavigator.Screen
           name="List"
           component={List}
+          //   todo -> add icons in here
+        />
+        <TabNavigator.Screen
+          name="MapView"
+          component={MapView}
           //   todo -> add icons in here
         />
       </TabNavigator.Navigator>
