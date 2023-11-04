@@ -3,7 +3,7 @@ import {IAuthStore} from '../types/storeT/Auth.type';
 import {IStateLocationProp} from '../types/constantT/location.type';
 
 const useAuthStore = create<IAuthStore>(set => ({
-  isLoggedIn: true,
+  isLoggedIn: false,
   userLocation: null,
   signIn: () => set({isLoggedIn: true}),
   signOut: () => set({isLoggedIn: false}),
