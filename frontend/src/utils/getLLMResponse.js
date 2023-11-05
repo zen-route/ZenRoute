@@ -1,30 +1,8 @@
-// import OpenAI from 'openai';
-
-// import {OPENAI_API_KEY} from 'react-native-dotenv';
-
-// console.log('OPENAI_API_KEY', OPENAI_API_KEY);
-
-// const openai = new OpenAI({apiKey: OPENAI_API_KEY});
-
-// const getLLMResponse = async ({question = '', statement = ''}) => {
-//   if (!question) return null;
-
-//   try {
-//     const completion = await openai.chat.completions.create();
-
-//     return completion.choices;
-//   } catch (error) {
-//     console.log({error});
-//     console.log(error.response);
-//   }
-// };
-
-// export default getLLMResponse;
+import {OPENAI_API_KEY} from 'react-native-dotenv';
 
 import axios from 'axios';
 const getLLMResponse = async ({question = '', statement = ''}) => {
-  const apiKey = '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';
-
+  const apiKey = OPENAI_API_KEY;
   const headers = {
     'Content-Type': 'application/json',
     Authorization: `Bearer ${apiKey}`,

@@ -9,6 +9,12 @@ const useAuthStore = create<IAuthStore>(set => ({
   signOut: () => set({isLoggedIn: false}),
   setUserLocation: (location: IStateLocationProp) =>
     set({userLocation: location}),
+  paths: null,
+  setPaths: (path: any) => set({paths: path}),
+  source: '',
+  setSource: (source: string) => set({source: source}),
+  destination: '',
+  setDestination: (destination: string) => set({destination: destination}),
 }));
 
 export default useAuthStore;

@@ -14,4 +14,5 @@ export type HomeRoutes = {
   List: undefined;
   MapView: undefined;
   PlanRide: undefined;
+  RecommendedPaths: undefined;
 };

@@ -2,7 +2,7 @@ import getLLMResponse from './getLLMResponse';
 
 const CATEGORIES = ['Lakes', 'Parks', 'Dineouts', 'Temples', 'Viewpoints'];
 
-const getJSONFromLLMResponse = response => {
+export const getJSONFromLLMResponse = response => {
   const json = response
     .replace(/'/g, '"')
     .replace(/True/g, 'true')

@@ -11,13 +11,16 @@ import getPropertyFromPrompt from '../../utils/getPropertiesFromPrompt';
 import Loading from '../../components/Loading';
 import axiosInstance from '../../services/axiosInstance';
 import getRecommenedPaths from '../../utils/getRecommenedPaths';
+import useAuthStore from '../../store/AuthStore';
 const PlanRide = ({
   navigation,
 }: StackNavigationProps<HomeRoutes, 'PlanRide'>) => {
   const [source, setSource] = React.useState('');
   const [destination, setDestination] = React.useState('');
   const [userPrompt, setUserPrompt] = React.useState('');
-
+  const setPaths = useAuthStore(state => state.setPaths);
+  const setSourcee = useAuthStore(state => state.setSource);
+  const setDestinationn = useAuthStore(state => state.setDestination);
   //   const [currentCategory, setCurrentCategory] = React.useState('' as string);
   //   const [currenttimeConstraint, setTimeConstraint] = React.useState('');
   //   const [currentadditionalConstraints, setAdditionalConstraints] =
@@ -57,7 +60,13 @@ const PlanRide = ({
       });
 
       console.log('PATHHHHHHH: ', res.data);
-      await getRecommenedPaths(res.data, aC);
+      const indices = await getRecommenedPaths(res.data, aC);
+      console.log('INDICESSSS: ', indices);
+      const recommendedPaths = indices.map(ind => res.data[ind]);
+      setPaths(recommendedPaths);
+      setSourcee(source);
+      setDestinationn(destination);
+      navigation.navigate('RecommendedPaths');
     } catch (err) {
       console.log('ERROR WHILE FETCHING DESIRED PATH: ', err);
     }

@@ -8,6 +8,7 @@ import Home from '../screens/Home/Home';
 import List from '../screens/List/List';
 import MapView from '../screens/MapView/MapView';
 import PlanRide from '../screens/PlanRide/PlanRide';
+import RecommendedPaths from '../screens/RecommendedPaths/RecommendedPaths';
 
 const TabNavigator = createBottomTabNavigator<HomeRoutes>();
 
@@ -18,7 +19,9 @@ const MainNavigator = () => {
       <TabNavigator.Navigator
         initialRouteName="Home"
         screenOptions={({route}) => ({
-          tabBarButton: ['MapView'].includes(route.name as string)
+          tabBarButton: ['MapView', 'PlanRide', 'RecommendedPaths'].includes(
+            route.name as string,
+          )
             ? () => null
             : undefined,
           headerShown: false,
@@ -48,6 +51,12 @@ const MainNavigator = () => {
         <TabNavigator.Screen
           name="PlanRide"
           component={PlanRide}
+          //   todo -> add icons in here
+        />
+
+        <TabNavigator.Screen
+          name="RecommendedPaths"
+          component={RecommendedPaths}
           //   todo -> add icons in here
         />
       </TabNavigator.Navigator>
