@@ -6,4 +6,10 @@ export interface IAuthStore {
   signOut: () => void;
   userLocation: IStateLocationProp | null;
   setUserLocation: (location: IStateLocationProp) => void;
+  paths: any;
+  setPaths: (path: any) => void;
+  source: string;
+  setSource: (source: string) => void;
+  destination: string;
+  setDestination: (destination: string) => void;
 }
